@@ -1,0 +1,22 @@
+body { 
+    font-family: Arial, 
+    sans-serif; 
+    text-align: center; 
+    background: #f6f6f6; 
+}
+
+svg { 
+    background: white; 
+    border: 1px solid #ccc; 
+    margin-top: 10px; 
+}
+
+circle { 
+    fill: steelblue; 
+    cursor: pointer; 
+}
+
+line { 
+    stroke: #aaa; 
+    stroke-width: 2; 
+}
