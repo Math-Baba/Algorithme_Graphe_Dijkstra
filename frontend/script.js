@@ -327,16 +327,6 @@ async function addConstraint(e) {
     }
 }
 
-// Effacer la visualisation
-function clearVisualization() {
-    dijkstraPath = null;
-    coloringData = null;
-    document.getElementById('dijkstra-result').className = 'result-box';
-    document.getElementById('coloring-result').className = 'result-box';
-    drawGraph();
-    updateInfoPanel('Visualisation effacée');
-}
-
 // Mettre à jour le panneau d'information
 function updateInfoPanel(message) {
     const infoPanel = document.getElementById('info-panel');
@@ -345,7 +335,7 @@ function updateInfoPanel(message) {
 
 // Afficher une erreur
 function showError(message) {
-    updateInfoPanel(`❌ ${message}`);
+    updateInfoPanel(`${message}`);
     console.error(message);
 }
 

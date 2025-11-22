@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #fae1dd; 
     min-height: 100vh;
     color: #333;
 }
@@ -22,7 +22,7 @@ header {
     color: white;
     margin-bottom: 30px;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #c9184a 0%, #e0aaff 100%);; 
     border-radius: 15px;
     backdrop-filter: blur(10px);
 }
@@ -66,7 +66,7 @@ header p {
 .panel-section h2 {
     font-size: 1.2em;
     margin-bottom: 15px;
-    color: #667eea;
+    color: #001524;
 }
 
 .visualization-area {
@@ -121,17 +121,17 @@ header p {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: #c9184a;
     color: white;
 }
 
 .btn-secondary {
-    background: #6c757d;
+    background: #6a040f;
     color: white;
 }
 
 .btn-success {
-    background: #28a745;
+    background: #c9184a ;
     color: white;
 }
 
@@ -217,7 +217,7 @@ input:focus {
 }
 
 .control-panel::-webkit-scrollbar-thumb {
-    background: #667eea;
+    background: #c9184a ;
     border-radius: 10px;
 }
 
