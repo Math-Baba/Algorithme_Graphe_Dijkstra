@@ -4,7 +4,8 @@ Interface web pour visualiser et tester les algorithmes de graphe (Dijkstra et C
 
 ## Utilisation
 
-1. **Créer la base de donnée PostgreSQL
+1. **Créer la base de donnée PostgreSQL**
+   
    Créez une base de donnée sur PG en suivant le schéma ci-après
    ```bash
    CREATE TABLE nodes (
@@ -27,6 +28,7 @@ Interface web pour visualiser et tester les algorithmes de graphe (Dijkstra et C
    ```
 
 3. **Créer le fichier .env**
+   
    Créez un fichier .env avec vos variables d'environnement pour vous connecter à votre base de données PostgreSQL
    ```bash
    DB_NAME=nom de votre base de donnée
@@ -36,14 +38,14 @@ Interface web pour visualiser et tester les algorithmes de graphe (Dijkstra et C
    DB_PORT=5432
    ```
    
-4. **Démarrer le serveur backend** :
+5. **Démarrer le serveur backend** :
    ```bash
    cd backend
    python server.py
    ```
    Le serveur doit être accessible sur `http://localhost:5000`
 
-5. **Ouvrir le frontend** :
+6. **Ouvrir le frontend** :
    - Ouvrir le fichier `index.html` dans votre navigateur
    - Ou utiliser un serveur local (ex: Live Server dans VS Code)
 
