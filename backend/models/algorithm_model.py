@@ -24,8 +24,7 @@ class Algorithm:
                 if neighbor not in unvisited:
                     continue
                     
-                penalty = contrainte.get(current, {}).get(neighbor, 0)
-                new_dist = dist[current] + weight + penalty
+                new_dist = dist[current] + weight 
                 if new_dist < dist[neighbor]:
                     dist[neighbor] = new_dist
                     previous[neighbor] = current

@@ -135,6 +135,11 @@ header p {
     color: white;
 }
 
+.btn-danger {
+    background: #5a189a;
+    color: white;
+}
+
 form {
     display: flex;
     flex-direction: column;

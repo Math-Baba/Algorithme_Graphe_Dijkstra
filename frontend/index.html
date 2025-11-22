@@ -32,6 +32,15 @@
                 </div>
 
                 <div class="panel-section">
+                    <h2>Supprimer un nœud</h2>
+                    <form id="form-delete-node">
+                        <input type="text" id="delete-node-name" placeholder="Nom du nœud" required>
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                    <div id="delete-node-result" class="result-box"></div>
+                </div>
+
+                <div class="panel-section">
                     <h2>Ajouter une arête</h2>
                     <form id="form-add-edge">
                         <input type="text" id="edge-node-a" placeholder="Nœud A" required>

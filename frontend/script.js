@@ -18,10 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Événements
     document.getElementById('btn-load-graph').addEventListener('click', loadGraph);
     document.getElementById('btn-coloring').addEventListener('click', applyColoring);
-    
     document.getElementById('form-add-node').addEventListener('submit', addNode);
     document.getElementById('form-add-edge').addEventListener('submit', addEdge);
     document.getElementById('form-add-constraint').addEventListener('submit', addConstraint);
+    document.getElementById('form-delete-node').addEventListener('submit', deleteNode);
     document.getElementById('form-dijkstra').addEventListener('submit', calculateDijkstra);
 });
 
@@ -320,6 +320,49 @@ async function addConstraint(e) {
         }
     } catch (error) {
         const resultBox = document.getElementById('constraint-result');
+        resultBox.className = 'result-box show error';
+        resultBox.innerHTML = `<h3>Erreur</h3><p>${error.message}</p>`;
+        showError('Erreur: ' + error.message);
+    }
+}
+
+// Supprimer un nœud
+async function deleteNode(e) {
+    e.preventDefault();
+    const name = document.getElementById('delete-node-name').value;
+
+    if (!name) {
+        showError('Veuillez spécifier un nom de nœud');
+        return;
+    }
+
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer le nœud "${name}" ? Toutes les arêtes connectées seront également supprimées.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/graph/node`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+
+        const resultBox = document.getElementById('delete-node-result');
+
+        if (response.ok) {
+            document.getElementById('delete-node-name').value = '';
+            resultBox.className = 'result-box show success';
+            resultBox.innerHTML = `<h3>Nœud supprimé</h3><p>Le nœud "${name}" et toutes ses arêtes ont été supprimés</p>`;
+            await loadGraph();
+            updateInfoPanel(`Nœud "${name}" supprimé`);
+        } else {
+            const data = await response.json();
+            resultBox.className = 'result-box show error';
+            resultBox.innerHTML = `<h3>Erreur</h3><p>${data.error || 'Erreur lors de la suppression du nœud'}</p>`;
+            showError(data.error || 'Erreur lors de la suppression du nœud');
+        }
+    } catch (error) {
+        const resultBox = document.getElementById('delete-node-result');
         resultBox.className = 'result-box show error';
         resultBox.innerHTML = `<h3>Erreur</h3><p>${error.message}</p>`;
         showError('Erreur: ' + error.message);

@@ -8,6 +8,8 @@ from controllers.graph_controllers import (
     handle_post_node,
     handle_post_edge,
     handle_post_constraint,
+    handle_delete_node,
+    handle_delete_edge,
 )
 
 def route_request(method, path, body=""):
@@ -28,6 +30,12 @@ def route_request(method, path, body=""):
 
     if method == "POST" and route == "/graph/constraint":
         return handle_post_constraint(body)
+
+    if method == "DELETE" and route == "/graph/node":
+        return handle_delete_node(body)
+
+    if method == "DELETE" and route == "/graph/edge":
+        return handle_delete_edge(body)
 
     if method == "GET" and route == "/algo/dijkstra":
         return handle_dijkstra(query), 200

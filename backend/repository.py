@@ -36,6 +36,18 @@ class GraphRepository:
             (penalty, a, b)
         )
 
+    def delete_node(self, name):
+        # Supprimer d'abord toutes les arêtes liées au nœud, puis le nœud
+        execute("DELETE FROM edges WHERE node_a = %s OR node_b = %s", (name, name))
+        execute("DELETE FROM nodes WHERE name = %s", (name,))
+
+    def delete_edge(self, a, b):
+        # Supprimer l'arête (dans les deux sens car graphe non orienté)
+        execute(
+            "DELETE FROM edges WHERE (node_a = %s AND node_b = %s) OR (node_a = %s AND node_b = %s)",
+            (a, b, b, a)
+        )
+
 def fetch_graph_from_db():
     rows_edges = fetch_all("SELECT node_a, node_b, weight FROM edges")
     graph = {}

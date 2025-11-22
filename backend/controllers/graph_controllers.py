@@ -50,3 +50,24 @@ def handle_block_node(body):
 
     repo.block_node(node)
     return '{"message":"Node blocked"}', 200
+
+def handle_delete_node(body):
+    data = json.loads(body)
+    name = data.get("name")
+
+    if not name:
+        return '{"error":"Missing name"}', 400
+
+    repo.delete_node(name)
+    return json.dumps({"message": "Node deleted"}), 200
+
+def handle_delete_edge(body):
+    data = json.loads(body)
+    a = data.get("node_a")
+    b = data.get("node_b")
+
+    if not a or not b:
+        return '{"error":"Missing node_a or node_b"}', 400
+
+    repo.delete_edge(a, b)
+    return json.dumps({"message": "Edge deleted"}), 200
