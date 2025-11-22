@@ -35,15 +35,19 @@ class GraphRepository:
         execute("INSERT INTO nodes(name, pos_x, pos_y) VALUES (%s, %s, %s)", (name, x, y))
 
     def create_edge(self, a, b, w):
-        execute("INSERT INTO edges(node_a, node_b, weight) VALUES (%s, %s, %s)", (a, b, w))
-        execute("INSERT INTO constraints(node_a, node_b, penalty) VALUES (%s, %s, 0)", (a, b))
-        execute("INSERT INTO constraints(node_b, node_a, penalty) VALUES (%s, %s, 0)", (b, a))
+        execute(
+            "INSERT INTO edges(node_a, node_b, weight) VALUES (%s, %s, %s)",
+            (a, b, w)
+        )
 
-    def update_constraint(self, a, b, penalty):
+
+    def add_constraint(self, a, b, penalty=0):
+        # Ajouter la contrainte seulement si elle n'existe pas
         execute("""
-            UPDATE constraints SET penalty = %s
-            WHERE node_a = %s AND node_b = %s
-        """, (penalty, a, b))
+            INSERT INTO constraints(node_a, node_b, penalty)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (node_a, node_b) DO NOTHING
+        """, (a, b, penalty))
 
     def block_edge(self, a, b):
         # Bloque totalement le chemin

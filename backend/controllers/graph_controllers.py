@@ -18,31 +18,28 @@ def handle_post_node(body):
     repo.create_node(name, x, y)
     return '{"message":"Node added"}', 201
 
-def handle_post_edge(body):
-    data = json.loads(body)
-    a = data.get("a")
-    b = data.get("b")
-    w = data.get("weight")
-
-    if not a or not b or w is None:
-        return '{"error":"Missing parameters"}', 400
+def handle_post_edge(body_text):
+    data = json.loads(body_text)
+    a = data.get("node_a")
+    b = data.get("node_b")
+    w = data.get("weight", 1)  # poids par défaut à 1 si non fourni
 
     repo.create_edge(a, b, w)
-    return '{"message":"Edge added"}', 201
+    return json.dumps({"message": "Edge created"}), 201
 
-def handle_post_constraint(body):
-    data = json.loads(body)
-    a = data.get("a")
-    b = data.get("b")
-    penalty = data.get("penalty")
+def handle_post_constraint(body_text):
+    data = json.loads(body_text)
+    a = data.get("node_a")
+    b = data.get("node_b")
+    penalty = data.get("penalty", 0)
 
-    repo.update_constraint(a, b, penalty)
-    return '{"message":"Constraint updated"}', 200
+    repo.add_constraint(a, b, penalty)
+    return json.dumps({"message": "Constraint added"}), 201
 
 def handle_block_edge(body):
     data = json.loads(body)
-    a = data.get("a")
-    b = data.get("b")
+    a = data.get("node_a")
+    b = data.get("node_b")
 
     repo.block_edge(a, b)
     return '{"message":"Edge blocked"}', 200

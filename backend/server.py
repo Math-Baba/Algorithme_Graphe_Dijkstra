@@ -1,5 +1,3 @@
-# server.py
-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from route import route_request
 
@@ -23,8 +21,8 @@ class App(BaseHTTPRequestHandler):
         self.wfile.write(response.encode())
 
 def run():
-    print("Backend running at http://localhost:8000")
-    HTTPServer(("localhost", 8000), App).serve_forever()
+    print("Backend running at http://localhost:8080")
+    HTTPServer(("localhost", 8080), App).serve_forever()
 
 if __name__ == "__main__":
     run()
