@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from route import route_request
+import json
 
 class App(BaseHTTPRequestHandler):
 
@@ -8,7 +9,7 @@ class App(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
-        self.wfile.write(response.encode())
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         length = int(self.headers.get("Content-Length", 0))
@@ -21,8 +22,8 @@ class App(BaseHTTPRequestHandler):
         self.wfile.write(response.encode())
 
 def run():
-    print("Backend running at http://localhost:8080")
-    HTTPServer(("localhost", 8080), App).serve_forever()
+    print("Backend running at http://localhost:5000")
+    HTTPServer(("localhost", 5000), App).serve_forever()
 
 if __name__ == "__main__":
     run()

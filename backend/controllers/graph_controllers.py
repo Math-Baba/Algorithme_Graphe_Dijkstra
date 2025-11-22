@@ -22,7 +22,7 @@ def handle_post_edge(body_text):
     data = json.loads(body_text)
     a = data.get("node_a")
     b = data.get("node_b")
-    w = data.get("weight", 1)  # poids par défaut à 1 si non fourni
+    w = data.get("weight", 1)
 
     repo.create_edge(a, b, w)
     return json.dumps({"message": "Edge created"}), 201
@@ -33,8 +33,8 @@ def handle_post_constraint(body_text):
     b = data.get("node_b")
     penalty = data.get("penalty", 0)
 
-    repo.add_constraint(a, b, penalty)
-    return json.dumps({"message": "Constraint added"}), 201
+    repo.update_edge_weight(a, b, penalty)
+    return json.dumps({"message": "Edge weight updated"}), 200
 
 def handle_block_edge(body):
     data = json.loads(body)
