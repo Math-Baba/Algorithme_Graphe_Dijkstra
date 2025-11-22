@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Événements
     document.getElementById('btn-load-graph').addEventListener('click', loadGraph);
-    document.getElementById('btn-clear').addEventListener('click', clearVisualization);
     document.getElementById('btn-coloring').addEventListener('click', applyColoring);
     
     document.getElementById('form-add-node').addEventListener('submit', addNode);
