@@ -43,6 +43,17 @@
                 </div>
 
                 <div class="panel-section">
+                    <h2>Ajouter une contrainte</h2>
+                    <form id="form-add-constraint">
+                        <input type="text" id="constraint-node-a" placeholder="Nœud A" required>
+                        <input type="text" id="constraint-node-b" placeholder="Nœud B" required>
+                        <input type="number" id="constraint-penalty" placeholder="Pénalité" value="0" required>
+                        <button type="submit" class="btn btn-success">Ajouter contrainte</button>
+                    </form>
+                    <div id="constraint-result" class="result-box"></div>
+                </div>
+
+                <div class="panel-section">
                     <h2>Algorithme de Dijkstra</h2>
                     <form id="form-dijkstra">
                         <input type="text" id="dijkstra-source" placeholder="Source (ex: Depot)" value="Depot">

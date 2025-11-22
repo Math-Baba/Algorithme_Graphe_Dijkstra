@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.getElementById('form-add-node').addEventListener('submit', addNode);
     document.getElementById('form-add-edge').addEventListener('submit', addEdge);
+    document.getElementById('form-add-constraint').addEventListener('submit', addConstraint);
     document.getElementById('form-dijkstra').addEventListener('submit', calculateDijkstra);
 });
 
@@ -283,6 +284,45 @@ async function addEdge(e) {
             showError(data.error || 'Erreur lors de l\'ajout de l\'arête');
         }
     } catch (error) {
+        showError('Erreur: ' + error.message);
+    }
+}
+
+// Ajouter une contrainte
+async function addConstraint(e) {
+    e.preventDefault();
+    const nodeA = document.getElementById('constraint-node-a').value;
+    const nodeB = document.getElementById('constraint-node-b').value;
+    const penalty = parseFloat(document.getElementById('constraint-penalty').value);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/graph/constraint`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ node_a: nodeA, node_b: nodeB, penalty })
+        });
+
+        const resultBox = document.getElementById('constraint-result');
+        
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById('constraint-node-a').value = '';
+            document.getElementById('constraint-node-b').value = '';
+            document.getElementById('constraint-penalty').value = '0';
+            resultBox.className = 'result-box show success';
+            resultBox.innerHTML = `<h3>Contrainte ajoutée</h3><p>Pénalité de ${penalty} ajoutée à l'arête entre "${nodeA}" et "${nodeB}"</p>`;
+            await loadGraph();
+            updateInfoPanel(`Contrainte ajoutée: pénalité de ${penalty} sur l'arête "${nodeA}" - "${nodeB}"`);
+        } else {
+            const data = await response.json();
+            resultBox.className = 'result-box show error';
+            resultBox.innerHTML = `<h3>Erreur</h3><p>${data.error || 'Erreur lors de l\'ajout de la contrainte'}</p>`;
+            showError(data.error || 'Erreur lors de l\'ajout de la contrainte');
+        }
+    } catch (error) {
+        const resultBox = document.getElementById('constraint-result');
+        resultBox.className = 'result-box show error';
+        resultBox.innerHTML = `<h3>Erreur</h3><p>${error.message}</p>`;
         showError('Erreur: ' + error.message);
     }
 }
