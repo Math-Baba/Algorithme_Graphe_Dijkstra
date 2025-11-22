@@ -258,12 +258,50 @@ async function addNode(e) {
     }
 }
 
+// Vérifier si une arête existe déjà entre deux nœuds
+function edgeExists(nodeA, nodeB) {
+    if (!graphData || !graphData.edges) {
+        return false;
+    }
+    
+    return graphData.edges.some(edge => 
+        (edge.node_a === nodeA && edge.node_b === nodeB) ||
+        (edge.node_a === nodeB && edge.node_b === nodeA)
+    );
+}
+
+// Obtenir le poids actuel d'une arête
+function getEdgeWeight(nodeA, nodeB) {
+    if (!graphData || !graphData.edges) {
+        return null;
+    }
+    
+    const edge = graphData.edges.find(edge => 
+        (edge.node_a === nodeA && edge.node_b === nodeB) ||
+        (edge.node_a === nodeB && edge.node_b === nodeA)
+    );
+    
+    return edge ? edge.weight : null;
+}
+
 // Ajouter une arête
 async function addEdge(e) {
     e.preventDefault();
     const nodeA = document.getElementById('edge-node-a').value;
     const nodeB = document.getElementById('edge-node-b').value;
     const weight = parseInt(document.getElementById('edge-weight').value);
+
+    // Vérifier si les nœuds sont identiques
+    if (nodeA === nodeB) {
+        showError('Impossible d\'ajouter une arête entre un nœud et lui-même');
+        return;
+    }
+
+    // Vérifier si l'arête existe déjà
+    if (edgeExists(nodeA, nodeB)) {
+        showError(`Une arête existe déjà entre les nœuds "${nodeA}" et "${nodeB}"`);
+        return;
+    }
 
     try {
         const response = await fetch(`${API_BASE_URL}/graph/edge`, {
@@ -293,6 +331,22 @@ async function addConstraint(e) {
     const nodeA = document.getElementById('constraint-node-a').value;
     const nodeB = document.getElementById('constraint-node-b').value;
     const penalty = parseFloat(document.getElementById('constraint-penalty').value);
+
+    // Vérifier si l'arête existe
+    if (!edgeExists(nodeA, nodeB)) {
+        showError(`Aucune arête n'existe entre les nœuds "${nodeA}" et "${nodeB}"`);
+        return;
+    }
+
+    // Vérifier que le poids ne deviendra pas négatif
+    const currentWeight = getEdgeWeight(nodeA, nodeB);
+    if (currentWeight !== null) {
+        const newWeight = currentWeight + penalty;
+        if (newWeight < 0) {
+            showError(`Le poids ne peut pas être négatif. Poids actuel: ${currentWeight}, pénalité: ${penalty}, résultat: ${newWeight}`);
+            return;
+        }
+    }
 
     try {
         const response = await fetch(`${API_BASE_URL}/graph/constraint`, {

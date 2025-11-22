@@ -22,18 +22,52 @@ class GraphRepository:
     def create_node(self, name, x, y):
         execute("INSERT INTO nodes(name, pos_x, pos_y) VALUES (%s, %s, %s)", (name, x, y))
 
+    def edge_exists(self, a, b):
+        """Vérifie si une arête existe déjà entre deux nœuds (dans les deux sens car graphe non orienté)"""
+        result = fetch_one(
+            "SELECT COUNT(*) as count FROM edges WHERE (node_a = %s AND node_b = %s) OR (node_a = %s AND node_b = %s)",
+            (a, b, b, a)
+        )
+        return result["count"] > 0 if result else False
+
     def create_edge(self, a, b, w):
+        # Vérifier si l'arête existe déjà
+        if self.edge_exists(a, b):
+            raise ValueError(f"Une arête existe déjà entre les nœuds '{a}' et '{b}'")
+        
         execute(
             "INSERT INTO edges(node_a, node_b, weight) VALUES (%s, %s, %s)",
             (a, b, w)
         )
 
 
+    def get_edge_weight(self, a, b):
+        """Récupère le poids actuel d'une arête (dans les deux sens car graphe non orienté)"""
+        result = fetch_one(
+            "SELECT weight FROM edges WHERE (node_a = %s AND node_b = %s) OR (node_a = %s AND node_b = %s) LIMIT 1",
+            (a, b, b, a)
+        )
+        return result["weight"] if result else None
+
     def update_edge_weight(self, a, b, penalty):
-        # Ajoute le penalty au poids existant
+        # Vérifier si l'arête existe
+        if not self.edge_exists(a, b):
+            raise ValueError(f"Aucune arête n'existe entre les nœuds '{a}' et '{b}'")
+        
+        # Récupérer le poids actuel
+        current_weight = self.get_edge_weight(a, b)
+        if current_weight is None:
+            raise ValueError(f"Impossible de récupérer le poids de l'arête entre '{a}' et '{b}'")
+        
+        # Vérifier que le nouveau poids ne sera pas négatif
+        new_weight = current_weight + penalty
+        if new_weight < 0:
+            raise ValueError(f"Le poids ne peut pas être négatif. Poids actuel: {current_weight}, pénalité: {penalty}, résultat: {new_weight}")
+        
+        # Ajouter le penalty au poids existant
         execute(
-            "UPDATE edges SET weight = weight + %s WHERE node_a = %s AND node_b = %s",
-            (penalty, a, b)
+            "UPDATE edges SET weight = weight + %s WHERE (node_a = %s AND node_b = %s) OR (node_a = %s AND node_b = %s)",
+            (penalty, a, b, b, a)
         )
 
     def delete_node(self, name):

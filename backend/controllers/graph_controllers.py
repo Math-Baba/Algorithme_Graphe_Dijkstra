@@ -24,8 +24,13 @@ def handle_post_edge(body_text):
     b = data.get("node_b")
     w = data.get("weight", 1)
 
-    repo.create_edge(a, b, w)
-    return json.dumps({"message": "Edge created"}), 201
+    try:
+        repo.create_edge(a, b, w)
+        return json.dumps({"message": "Edge created"}), 201
+    except ValueError as e:
+        return json.dumps({"error": str(e)}), 400
+    except Exception as e:
+        return json.dumps({"error": f"Erreur lors de l'ajout de l'arête: {str(e)}"}), 500
 
 def handle_post_constraint(body_text):
     data = json.loads(body_text)
@@ -33,8 +38,13 @@ def handle_post_constraint(body_text):
     b = data.get("node_b")
     penalty = data.get("penalty", 0)
 
-    repo.update_edge_weight(a, b, penalty)
-    return json.dumps({"message": "Edge weight updated"}), 200
+    try:
+        repo.update_edge_weight(a, b, penalty)
+        return json.dumps({"message": "Edge weight updated"}), 200
+    except ValueError as e:
+        return json.dumps({"error": str(e)}), 400
+    except Exception as e:
+        return json.dumps({"error": f"Erreur lors de la mise à jour du poids: {str(e)}"}), 500
 
 def handle_block_edge(body):
     data = json.loads(body)
