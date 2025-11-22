@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation Graphe - Dijkstra & Coloriage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Visualisation de Graphe</h1>
+            <p>Algorithme de Dijkstra & Coloriage</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Panneau de contrôle -->
+            <aside class="control-panel">
+                <div class="panel-section">
+                    <h2>Graphe</h2>
+                    <button id="btn-load-graph" class="btn btn-primary">Charger le graphe</button>
+                    <button id="btn-clear" class="btn btn-secondary">Effacer</button>
+                </div>
+
+                <div class="panel-section">
+                    <h2>Ajouter un nœud</h2>
+                    <form id="form-add-node">
+                        <input type="text" id="node-name" placeholder="Nom du nœud" required>
+                        <input type="number" id="node-x" placeholder="Position X" value="0" required>
+                        <input type="number" id="node-y" placeholder="Position Y" value="0" required>
+                        <button type="submit" class="btn btn-success">Ajouter</button>
+                    </form>
+                </div>
+
+                <div class="panel-section">
+                    <h2>Ajouter une arête</h2>
+                    <form id="form-add-edge">
+                        <input type="text" id="edge-node-a" placeholder="Nœud A" required>
+                        <input type="text" id="edge-node-b" placeholder="Nœud B" required>
+                        <input type="number" id="edge-weight" placeholder="Poids" value="1" min="1" required>
+                        <button type="submit" class="btn btn-success">Ajouter</button>
+                    </form>
+                </div>
+
+                <div class="panel-section">
+                    <h2>Algorithme de Dijkstra</h2>
+                    <form id="form-dijkstra">
+                        <input type="text" id="dijkstra-source" placeholder="Source (ex: Depot)" value="Depot">
+                        <input type="text" id="dijkstra-target" placeholder="Cible" required>
+                        <button type="submit" class="btn btn-primary">Calculer le chemin</button>
+                    </form>
+                    <div id="dijkstra-result" class="result-box"></div>
+                </div>
+
+                <div class="panel-section">
+                    <h2>Coloriage</h2>
+                    <button id="btn-coloring" class="btn btn-primary">Appliquer le coloriage</button>
+                    <div id="coloring-result" class="result-box"></div>
+                </div>
+            </aside>
+
+            <!-- Zone de visualisation -->
+            <main class="visualization-area">
+                <canvas id="graph-canvas"></canvas>
+                <div id="info-panel" class="info-panel">
+                    <p>Cliquez sur "Charger le graphe" pour commencer</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

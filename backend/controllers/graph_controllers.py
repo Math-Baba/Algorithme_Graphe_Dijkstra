@@ -4,7 +4,7 @@ from repository import GraphRepository
 repo = GraphRepository()
 
 def handle_get_graph():
-    return json.dumps(repo.get_graph())
+    return repo.get_graph()
 
 def handle_post_node(body):
     data = json.loads(body)

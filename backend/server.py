@@ -4,12 +4,27 @@ import json
 
 class App(BaseHTTPRequestHandler):
 
+    def _set_cors_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self._set_cors_headers()
+        self.end_headers()
+
     def do_GET(self):
         response, code = route_request("GET", self.path)
         self.send_response(code)
         self.send_header("Content-Type", "application/json")
+        self._set_cors_headers()
         self.end_headers()
-        self.wfile.write(json.dumps(response).encode())
+        # Si response est déjà une string, l'encoder directement, sinon le convertir en JSON
+        if isinstance(response, str):
+            self.wfile.write(response.encode())
+        else:
+            self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         length = int(self.headers.get("Content-Length", 0))
@@ -18,6 +33,7 @@ class App(BaseHTTPRequestHandler):
 
         self.send_response(code)
         self.send_header("Content-Type", "application/json")
+        self._set_cors_headers()
         self.end_headers()
         self.wfile.write(response.encode())
 
